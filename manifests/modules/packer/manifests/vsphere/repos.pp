@@ -30,14 +30,16 @@ class packer::vsphere::repos inherits packer::vsphere::params {
         },
       }
 
-      apt::source { "${lsbdistcodename}-updates":
-        release  => "$updates_release",
-        location => "${repo_mirror}/${repo_name}",
-        repos    => "$repo_list",
-        include  => {
-          'src' => true,
-          'deb' => true,
-        },
+      unless $::lsbdistcodename == 'squeeze' {
+        apt::source { "${lsbdistcodename}-updates":
+          release  => "$updates_release",
+          location => "${repo_mirror}/${repo_name}",
+          repos    => "$repo_list",
+          include  => {
+            'src' => true,
+            'deb' => true,
+          },
+        }
       }
 
       apt::source { "${lsbdistcodename}-security":
